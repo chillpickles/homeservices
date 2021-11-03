@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-controller
+  namespace: homeservices-unifi
+spec:
+  selector:
+    matchLabels:
+      app: unifi-controller
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: unifi-controller
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: unifi-controller
+        image: lscr.io/linuxserver/unifi-controller
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        - containerPort: 8843
+        - containerPort: 8880
+        - containerPort: 6789
+        - containerPort: 3478
+        - containerPort: 10001
