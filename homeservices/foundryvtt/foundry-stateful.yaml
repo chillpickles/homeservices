@@ -29,3 +29,55 @@ spec:
           operator: In
           values:
           - zmh-homeservices-003
+
+---
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: interface
+    port: 30000
+    protocol: TCP
+    targetPort: interface
+  selector:
+    app: foundryvtt
+  loadBalancerIP: 192.168.1.30
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: foundryvtt
+  namespace: zmh-gamesrv
+spec:
+  selector:
+    matchLabels:
+      app: foundryvtt # has to match .spec.template.metadata.labels
+  serviceName: "foundryvtt"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: foundryvtt # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: foundryvtt
+        image: felddy/foundryvtt:release
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: interface
+          containerPort: 30000
+          protocol: TCP
+        volumeMounts:
+        - name: zmh-gameservices-foundryvtt
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: zmh-homeservices-unifi
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 100Gi
