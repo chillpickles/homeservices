@@ -71,7 +71,7 @@ spec:
         - name: FOUNDRY_PASSWORD
           value: WheatLynchPin717
         - name: FOUNDRY_HOSTNAME
-          value:
+          value: zmh-foundryvtt
         ports:
         - name: interface
           containerPort: 30000
