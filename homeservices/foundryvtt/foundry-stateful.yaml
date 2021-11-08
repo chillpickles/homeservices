@@ -65,6 +65,13 @@ spec:
       - name: foundryvtt
         image: felddy/foundryvtt:release
         imagePullPolicy: IfNotPresent
+        env:
+        - name: FOUNDRY_USERNAME
+          value: chillary
+        - name: FOUNDRY_PASSWORD
+          value: WheatLynchPin717
+        - name: FOUNDRY_HOSTNAME
+          value:
         ports:
         - name: interface
           containerPort: 30000
