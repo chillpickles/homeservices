@@ -31,6 +31,11 @@ spec:
           - zmh-homeservices-003
 
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zmh-gameservices-foundryvtt
+  namespace: zmh-gamesrv
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
@@ -60,18 +65,20 @@ spec:
       labels:
         app: foundryvtt # has to match .spec.selector.matchLabels
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       terminationGracePeriodSeconds: 10
       containers:
       - name: foundryvtt
         image: felddy/foundryvtt:release
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
+        - name: port
+          value: "3000"
         - name: FOUNDRY_USERNAME
           value: chillary
         - name: FOUNDRY_PASSWORD
           value: WheatLynchPin717
-        - name: FOUNDRY_HOSTNAME
-          value: zmh-foundryvtt
         ports:
         - name: interface
           containerPort: 30000
@@ -81,7 +88,7 @@ spec:
           mountPath: /data
   volumeClaimTemplates:
   - metadata:
-      name: zmh-homeservices-unifi
+      name: zmh-gameservices-foundryvtt
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: local-storage
