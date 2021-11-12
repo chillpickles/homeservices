@@ -65,6 +65,8 @@ spec:
       labels:
         app: minecraftftb # has to match .spec.selector.matchLabels
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       terminationGracePeriodSeconds: 10
       containers:
       - name: minecraftftb
