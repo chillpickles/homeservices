@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zmh-gamesrv-mc
+  labels:
+    name: zmh-gamesrv-mc
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zmh-gameservices-mcftb
+  namespace: zmh-gamesrv-mc
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /opt/minecraftFTB
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - zmh-homeservices-003
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zmh-gameservices-mcftb
+  namespace: zmh-gamesrv-mc
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: interface
+    port: 25560
+    protocol: TCP
+    targetPort: interface
+  selector:
+    app: foundryvtt
+  loadBalancerIP: 192.168.1.35
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minecraftftb
+  namespace: zmh-gamesrv-mc
+spec:
+  selector:
+    matchLabels:
+      app: minecraftftb # has to match .spec.template.metadata.labels
+  serviceName: "minecraftftb"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: minecraftftb # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: minecraftftb
+        image: itzg/minecraft-server:multiarch
+        imagePullPolicy: Always
+        env:
+        - name: SERVER_NAME
+          value: "minecraftFTB"
+        - name: EULA
+          value: "true"
+        - name: TYPE
+          value: "FTBA"
+        - name: FTB_MODPACK_ID
+          value: "35"
+        - name: DIFFICULTY
+          value: "normal"
+        - name: ENABLE_RCON
+          value: "true"
+        - name: RCON_PASSWORD
+          value: "whispering"
+        - name: ALLOW_NETHER
+          value: "true"
+        - name: GENERATE_STRUCTURES
+          value: "true"
+        - name: MAX_TICK_TIME
+          value: "60000"
+        - name: SPAWN_PROTECTION
+          value: "10"
+        - name: VIEW_DISTANCE
+          value: "20"
+        - name: SERVER_PORT
+          value: "25560"
+        ports:
+        - name: interface
+          containerPort: 25560
+          protocol: TCP
+        volumeMounts:
+        - name: zmh-gameservices-mcftb
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: zmh-gameservices-mcftb
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 20Gi
