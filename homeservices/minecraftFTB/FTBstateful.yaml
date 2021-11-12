@@ -41,11 +41,11 @@ spec:
   externalTrafficPolicy: Local
   ports:
   - name: interface
-    port: 25560
+    port: 25565
     protocol: TCP
     targetPort: interface
   selector:
-    app: foundryvtt
+    app: minecraftftb
   loadBalancerIP: 192.168.1.35
 
 ---
@@ -73,8 +73,8 @@ spec:
         image: itzg/minecraft-server:multiarch
         imagePullPolicy: Always
         env:
-        - name: SERVER_NAME
-          value: "minecraftFTB"
+        - name: VERSION
+          value: "1.12.2"
         - name: EULA
           value: "true"
         - name: TYPE
@@ -83,14 +83,6 @@ spec:
           value: "35"
         - name: DIFFICULTY
           value: "normal"
-        - name: ENABLE_RCON
-          value: "true"
-        - name: RCON_PASSWORD
-          value: "whispering"
-        - name: ALLOW_NETHER
-          value: "true"
-        - name: GENERATE_STRUCTURES
-          value: "true"
         - name: MAX_TICK_TIME
           value: "60000"
         - name: SPAWN_PROTECTION
@@ -98,10 +90,10 @@ spec:
         - name: VIEW_DISTANCE
           value: "20"
         - name: SERVER_PORT
-          value: "25560"
+          value: "25565"
         ports:
         - name: interface
-          containerPort: 25560
+          containerPort: 25565
           protocol: TCP
         volumeMounts:
         - name: zmh-gameservices-mcftb
