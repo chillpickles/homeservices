@@ -70,7 +70,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: minecraftftb
-        image: itzg/minecraft-server:multiarch
+        image: itzg/minecraft-server:java8-multiarch
         imagePullPolicy: Always
         env:
         - name: VERSION
@@ -81,6 +81,8 @@ spec:
           value: "FTBA"
         - name: FTB_MODPACK_ID
           value: "35"
+        - name: FTB_MODPACK_VERSION_ID
+          value: "3.4.0"
         - name: DIFFICULTY
           value: "normal"
         - name: MAX_TICK_TIME
