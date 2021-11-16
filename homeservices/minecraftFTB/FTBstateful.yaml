@@ -90,7 +90,7 @@ spec:
         - name: SPAWN_PROTECTION
           value: "10"
         - name: VIEW_DISTANCE
-          value: "20"
+          value: "12"
         ports:
         - name: interface
           containerPort: 25565
