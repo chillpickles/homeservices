@@ -91,6 +91,8 @@ spec:
           value: "10"
         - name: VIEW_DISTANCE
           value: "12"
+        - name:
+          value:
         ports:
         - name: interface
           containerPort: 25565
