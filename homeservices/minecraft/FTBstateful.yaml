@@ -101,6 +101,14 @@ spec:
           value: "true"
         - name: LEVEL
           value: "wispyrevelations"
+        - name: ALLOW_FLIGHT
+          value: "true"
+        - name: SERVER_NAME
+          value: "WISPY MINECRAFT REVELATIONS"
+        - name: INIT_MEMORY
+          value: "4G"
+        - name: MAX_MEMORY
+          value: "8G"
         ports:
         - name: interface
           containerPort: 25565
