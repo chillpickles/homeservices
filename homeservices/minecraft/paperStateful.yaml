@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: zmh-gamesrv-mc
+  name: zmh-gamesrv-mc2
   labels:
-    name: zmh-gamesrv-mc
+    name: zmh-gamesrv-mc2
 
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: zmh-gameservices-mcftb
-  namespace: zmh-gamesrv-mc
+  name: zmh-gameservices-mcMMO
+  namespace: zmh-gamesrv-mc2
 spec:
   capacity:
     storage: 20Gi
@@ -20,7 +20,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /opt/minecraftFTB
+    path: /opt/minecraftmcMMO
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -34,8 +34,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: zmh-gameservices-mcftb
-  namespace: zmh-gamesrv-mc
+  name: zmh-gameservices-mcMMO
+  namespace: zmh-gamesrv-mc2
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
@@ -45,44 +45,43 @@ spec:
     protocol: TCP
     targetPort: interface
   selector:
-    app: minecraftftb
-  loadBalancerIP: 192.168.1.35
+    app: minecraftmcMMO
+  loadBalancerIP: 192.168.1.55
 
 ---
+#mcMMO
+#GriefDefender
+#LuckPerms
+#NoCheatPlus
+#
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: minecraftftb
-  namespace: zmh-gamesrv-mc
+  name: minecraftmcMMO
+  namespace: zmh-gamesrv-mc2
 spec:
   selector:
     matchLabels:
-      app: minecraftftb # has to match .spec.template.metadata.labels
-  serviceName: "minecraftftb"
+      app: minecraftmcMMO # has to match .spec.template.metadata.labels
+  serviceName: "minecraftmcMMO"
   replicas: 1 # by default is 1
   template:
     metadata:
       labels:
-        app: minecraftftb # has to match .spec.selector.matchLabels
+        app: minecraftmcMMO # has to match .spec.selector.matchLabels
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       terminationGracePeriodSeconds: 10
       containers:
-      - name: minecraftftb
-        image: itzg/minecraft-server:java8-multiarch
+      - name: minecraftmcMMO
+        image: itzg/minecraft-server
         imagePullPolicy: Always
         env:
-        - name: VERSION
-          value: "1.12.2"
         - name: EULA
           value: "true"
-        - name: TYPE
-          value: "FTBA"
-        - name: FTB_MODPACK_ID
-          value: "35"
-        - name: FTB_MODPACK_VERSION_ID
-          value: "3.4.0"
+        - name: MOTD
+          value: "Welcome to a Chill Minecraft Experience"
         - name: DIFFICULTY
           value: "normal"
         - name: MAX_TICK_TIME
@@ -94,17 +93,21 @@ spec:
         - name: OVERRIDE_ICON
           value: "true"
         - name: ICON
-          value: ""
+          value: "foo/bar"
+        - name: ENABLE_RCON
+          value: "true"
+        - name: RCON_PASSWORD
+          value: "PurplePorpoise"
         - name: MAX_PLAYERS
           value: "50"
         - name: ALLOW_NETHER
           value: "true"
         - name: LEVEL
-          value: "wispyrevelations"
+          value: "mcMMOworld"
         - name: ALLOW_FLIGHT
           value: "true"
         - name: SERVER_NAME
-          value: "WISPY MINECRAFT REVELATIONS"
+          value: "Chill Minecraft MMO"
         - name: INIT_MEMORY
           value: "4G"
         - name: MAX_MEMORY
@@ -114,11 +117,11 @@ spec:
           containerPort: 25565
           protocol: TCP
         volumeMounts:
-        - name: zmh-gameservices-mcftb
+        - name: zmh-gameservices-mcMMO
           mountPath: /data
   volumeClaimTemplates:
   - metadata:
-      name: zmh-gameservices-mcftb
+      name: zmh-gameservices-mcMMO
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: local-storage
