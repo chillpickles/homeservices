@@ -41,11 +41,11 @@ spec:
   externalTrafficPolicy: Local
   ports:
   - name: interface
-    port: 25565
+    port: 25585
     protocol: TCP
     targetPort: interface
   selector:
-    app: minecraftmcMMO
+    app: minecraftmcmmo
   loadBalancerIP: 192.168.1.55
 
 ---
@@ -58,27 +58,37 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: minecraftmcMMO
+  name: minecraftmcmmo
   namespace: zmh-gamesrv-mc2
 spec:
   selector:
     matchLabels:
-      app: minecraftmcMMO # has to match .spec.template.metadata.labels
-  serviceName: "minecraftmcMMO"
+      app: minecraftmcmmo # has to match .spec.template.metadata.labels
+  serviceName: "minecraftmcmmo"
   replicas: 1 # by default is 1
   template:
     metadata:
       labels:
-        app: minecraftmcMMO # has to match .spec.selector.matchLabels
+        app: minecraftmcmmo # has to match .spec.selector.matchLabels
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       terminationGracePeriodSeconds: 10
       containers:
-      - name: minecraftmcMMO
-        image: itzg/minecraft-server
+      - name: minecraftmcmmo
+        image: itzg/minecraft-server:latest
         imagePullPolicy: Always
         env:
+        - name: TYPE
+          value: PAPER
+        - name: VERSION
+          value: "1.18"
+#        - name: PAPERBUILD
+#          value: "398"
+        - name: SERVER_PORT
+          value: "25585"
+        - name: OVERRIDE_SERVER_PROPERTIES
+          value: "true"
         - name: EULA
           value: "true"
         - name: MOTD
@@ -95,11 +105,11 @@ spec:
           value: "true"
         - name: ICON
           value: "foo/bar"
-        - name: ENABLE_RCON
-          value: "true"
-        - name: RCON_PASSWORD
-          value: "PurplePorpoise"
-        - name: MAX_PLAYERS
+#        - name: ENABLE_RCON
+#          value: "true"
+#        - name: RCON_PASSWORD
+#          value: "PurplePorpoise"
+        - name: MAX_PLAYER
           value: "50"
         - name: ALLOW_NETHER
           value: "true"
@@ -115,7 +125,7 @@ spec:
           value: "8G"
         ports:
         - name: interface
-          containerPort: 25565
+          containerPort: 25585
           protocol: TCP
         volumeMounts:
         - name: zmh-gameservices-mcmmo
