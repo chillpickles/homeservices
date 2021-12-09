@@ -107,6 +107,8 @@ spec:
           value: "foo/bar"
 #        - name: ENABLE_RCON
 #          value: "true"
+#        - name: RCON_PORT
+#          value: 25575
 #        - name: RCON_PASSWORD
 #          value: "PurplePorpoise"
         - name: MAX_PLAYER
