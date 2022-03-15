@@ -103,8 +103,8 @@ spec:
           value: "20"
         - name: OVERRIDE_ICON
           value: "true"
-        - name: ICON
-          value: "foo/bar"
+#        - name: ICON
+#          value: "foo/bar"
 #        - name: ENABLE_RCON
 #          value: "true"
 #        - name: RCON_PORT
