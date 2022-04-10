@@ -1,0 +1,139 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zmh-gamesrv-valheim
+  labels:
+    name: zmh-gamesrv-valheim
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zmh-gameservices-familytime
+  namespace: zmh-gamesrv-valheim
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /opt/familytime
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - zmh-homeservices-003
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zmh-gameservices-familytime
+  namespace: zmh-gamesrv-valheim
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: interface
+    port: 2456
+    protocol: UDP
+    targetPort: interface
+  - name: interface2
+    port: 2457
+    protocol: UDP
+    targetPort: interface2
+  selector:
+    app: familytime
+  loadBalancerIP: 192.168.1.90
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: familytime
+  namespace: zmh-gamesrv-valheim
+spec:
+  selector:
+    matchLabels:
+      app: familytime # has to match .spec.template.metadata.labels
+  serviceName: "familytime"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: familytime # has to match .spec.selector.matchLabels
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: familytime
+        #image: ghcr.io/lloesche/valheim-server:c5f5a69cdeb25b08024fa36fe22f3dc6c7b05fdf
+        image: lloesche/valheim-server:latest
+        imagePullPolicy: Always
+        env:
+        - name: SERVER_NAME
+          value: "familytime"
+        - name: SERVER_PORT
+          value: "2456"
+        - name: SERVER_PORT
+          value: "2457"
+        - name: WORLD_NAME
+          value: FRIEND
+        - name: SERVER_PASS
+          value: "tooshort"
+        - name: SERVER_PUBLIC
+          value: "true"
+        - name: UPDATE_CRON
+          value: "0 */4 * * *"
+        - name: UPDATE_IF_IDLE
+          value: "true"
+        - name: RESTART_CRON
+          value: "0 5 * * *"
+        - name: RESTART_IF_IDLE
+          value: "true"
+        - name: TZ
+          value: "America/Chicago"
+        - name: BACKUPS
+          value: "true"
+        - name: BACKUPS_CRON
+          value: "0 */6 * * *"
+        - name: BACKUPS_DIRECTORY
+          value: "/config/backups"
+        - name: BACKUPS_MAX_AGE
+          value: "3"
+        - name: BACKUPS_MAX_COUNT
+          value: "0"
+        - name: BACKUPS_IF_IDLE
+          value: "false"
+        - name: BACKUPS_ZIP
+          value: "true"
+        - name: STEAMCMD_ARGS
+          value: "validate"
+        - name: VALHEIM_PLUS
+          value: "false"
+        ports:
+        - name: interface
+          containerPort: 2456
+          protocol: UDP
+        - name: interface2
+          containerPort: 2457
+          protocol: UDP
+        volumeMounts:
+        - name: zmh-gameservices-familytime
+          mountPath: /config
+  volumeClaimTemplates:
+  - metadata:
+      name: zmh-gameservices-familytime
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 20Gi

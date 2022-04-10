@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zmh-gamesrv-mc2
+  labels:
+    name: zmh-gamesrv-mc2
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zmh-gameservices-mcmmo
+  namespace: zmh-gamesrv-mc2
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /opt/minecraftmcMMO
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - zmh-gameservices-test1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zmh-gameservices-mcmmo
+  namespace: zmh-gamesrv-mc2
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: interface
+    port: 25585
+    protocol: TCP
+    targetPort: interface
+  - name: rcon
+    port: 25590
+    protocol: TCP
+    targetPort: rcon
+  selector:
+    app: minecraftmcmmo
+  loadBalancerIP: 192.168.1.55
+
+---
+#mcMMO
+#GriefDefender
+#LuckPerms
+#NoCheatPlus
+#Geyser
+#Floodgate
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minecraftmcmmo
+  namespace: zmh-gamesrv-mc2
+spec:
+  selector:
+    matchLabels:
+      app: minecraftmcmmo # has to match .spec.template.metadata.labels
+  serviceName: "minecraftmcmmo"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: minecraftmcmmo # has to match .spec.selector.matchLabels
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: minecraftmcmmo
+        image: itzg/minecraft-server:latest
+        imagePullPolicy: Always
+        env:
+        - name: TYPE
+          value: PAPER
+        - name: VERSION
+          value: "1.18"
+#        - name: PAPERBUILD
+#          value: "398"
+        - name: SERVER_PORT
+          value: "25585"
+        - name: OVERRIDE_SERVER_PROPERTIES
+          value: "false"
+        - name: OPS
+          value: "chillpickles"
+        - name: EULA
+          value: "true"
+        - name: MOTD
+          value: "Welcome to a Chill Minecraft Experience"
+        - name: DIFFICULTY
+          value: "normal"
+        - name: MAX_TICK_TIME
+          value: "60000"
+        - name: SPAWN_PROTECTION
+          value: "10"
+        - name: VIEW_DISTANCE
+          value: "20"
+        - name: OVERRIDE_ICON
+          value: "true"
+#        - name: ICON
+#          value: "foo/bar"
+#        - name: ENABLE_RCON
+#          value: "true"
+#        - name: RCON_PORT
+#          value: 25575
+#        - name: RCON_PASSWORD
+#          value: "PurplePorpoise"
+        - name: MAX_PLAYER
+          value: "50"
+        - name: ALLOW_NETHER
+          value: "true"
+        - name: LEVEL
+          value: "mcMMOworld"
+        - name: ALLOW_FLIGHT
+          value: "true"
+        - name: SERVER_NAME
+          value: "Chill Minecraft MMO"
+        - name: INIT_MEMORY
+          value: "4G"
+        - name: MAX_MEMORY
+          value: "8G"
+        ports:
+        - name: interface
+          containerPort: 25585
+          protocol: TCP
+        volumeMounts:
+        - name: zmh-gameservices-mcmmo
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: zmh-gameservices-mcmmo
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 20Gi
