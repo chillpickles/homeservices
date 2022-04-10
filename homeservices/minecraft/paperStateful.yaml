@@ -44,6 +44,10 @@ spec:
     port: 25585
     protocol: TCP
     targetPort: interface
+  - name: rcon
+    port: 25590
+    protocol: TCP
+    targetPort: rcon
   selector:
     app: minecraftmcmmo
   loadBalancerIP: 192.168.1.55
@@ -88,7 +92,9 @@ spec:
         - name: SERVER_PORT
           value: "25585"
         - name: OVERRIDE_SERVER_PROPERTIES
-          value: "true"
+          value: "false"
+        - name: OPS
+          value: "chillpickles"
         - name: EULA
           value: "true"
         - name: MOTD
@@ -105,12 +111,12 @@ spec:
           value: "true"
         - name: ICON
           value: "foo/bar"
-#        - name: ENABLE_RCON
-#          value: "true"
-#        - name: RCON_PORT
-#          value: 25575
-#        - name: RCON_PASSWORD
-#          value: "PurplePorpoise"
+        - name: ENABLE_RCON
+          value: "true"
+        - name: RCON_PORT
+          value: "25590"
+        - name: RCON_PASSWORD
+          value: "PurplePorpoise"
         - name: MAX_PLAYER
           value: "50"
         - name: ALLOW_NETHER
