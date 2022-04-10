@@ -109,14 +109,14 @@ spec:
           value: "20"
         - name: OVERRIDE_ICON
           value: "true"
-        - name: ICON
-          value: "foo/bar"
-        - name: ENABLE_RCON
-          value: "true"
-        - name: RCON_PORT
-          value: "25590"
-        - name: RCON_PASSWORD
-          value: "PurplePorpoise"
+#        - name: ICON
+#          value: "foo/bar"
+#        - name: ENABLE_RCON
+#          value: "true"
+#        - name: RCON_PORT
+#          value: 25575
+#        - name: RCON_PASSWORD
+#          value: "PurplePorpoise"
         - name: MAX_PLAYER
           value: "50"
         - name: ALLOW_NETHER
