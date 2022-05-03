@@ -78,7 +78,7 @@ spec:
         - name: FOUNDRY_USERNAME
           value: chillary
         - name: FOUNDRY_PASSWORD
-          value: WheatLynchPin717
+          value: ""
         ports:
         - name: interface
           containerPort: 30000
