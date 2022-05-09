@@ -86,7 +86,7 @@ spec:
         - name: TYPE
           value: PAPER
         - name: VERSION
-          value: "1.18"paaclean-terraform/modules/resources/ec2-nginx-proxy/
+          value: "1.18"
 #        - name: PAPERBUILD
 #          value: "398"
         - name: SERVER_PORT
@@ -98,7 +98,7 @@ spec:
         - name: EULA
           value: "true"
         - name: MOTD
-          value: "Welcome to a Chill Minecraft Experience"
+          value: "Welcome to a Chillcraft Experience"
         - name: DIFFICULTY
           value: "normal"
         - name: MAX_TICK_TIME
@@ -126,7 +126,7 @@ spec:
         - name: ALLOW_FLIGHT
           value: "true"
         - name: SERVER_NAME
-          value: "Chill Minecraft MMO"
+          value: "Chillcraft"
         - name: INIT_MEMORY
           value: "4G"
         - name: MAX_MEMORY
