@@ -86,7 +86,7 @@ spec:
         - name: TYPE
           value: PAPER
         - name: VERSION
-          value: "1.18"
+          value: "1.18"paaclean-terraform/modules/resources/ec2-nginx-proxy/
 #        - name: PAPERBUILD
 #          value: "398"
         - name: SERVER_PORT
@@ -147,3 +147,39 @@ spec:
       resources:
         requests:
           storage: 20Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-minecraft-java
+spec:
+  rules:
+  - host: minecraft.whisperingmandrake.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minecraft-java
+            port:
+              number: 25585
+  ingressClassName: nginx
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-minecraft-bedrock
+spec:
+  rules:
+  - host: minecraft.whisperingmandrake.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minecraft-bedrock
+            port:
+              number: 19132
+  ingressClassName: nginx
