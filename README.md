@@ -1,5 +1,7 @@
 # Homeservices
 
+This is a list of things we'd like to build into our homelab(s)
+
 ## Operators
 
 | Name |
