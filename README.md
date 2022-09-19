@@ -15,6 +15,7 @@ This is a list of things we'd like to build into our homelab(s)
 | [flux](https://fluxcd.io/) |
 | [vault](https://www.vaultproject.io/docs/secrets/key-management) |
 | [metalLB](https://metallb.universe.tf/) |
+| [ingress-nginx](https://github.com/kubernetes/ingress-nginx) |
 
 ## Workloads
 
