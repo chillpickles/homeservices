@@ -1,0 +1,10 @@
+curl -sfL https://get.k3s.io | sh -s - server \
+  --disable traefik \
+  --disable servicelb \
+  --secrets-encryption \
+  --flannel-backend "host-gw" \
+  --cluster-cidr "10.42.0.0/16" \
+  --service-cidr "10.43.0.0/16" \
+  --cluster-dns "10.43.0.10
+  
+  # sudo rm -rf /etc/rancher /var/lib/rancher /var/lib/kubelet
