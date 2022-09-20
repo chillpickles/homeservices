@@ -9,8 +9,12 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - 192.168.1.10-192.168.1.19
+      - 10.223.1.1-10.223.1.100
     - name: zmh-netsrv
       protocol: layer2
       addresses:
-      - 192.168.1.20-192.168.1.39
+      - 10.223.10.1-10.223.10.100
+    - name: zmh-gameservices
+      protocol: layer2
+      addresses:
+      - 10.223.20.1-10.223.20.100

@@ -98,7 +98,7 @@ spec:
         - name: EULA
           value: "true"
         - name: MOTD
-          value: "Welcome to a Chill Minecraft Experience"
+          value: "Welcome to a Chillcraft Experience"
         - name: DIFFICULTY
           value: "normal"
         - name: MAX_TICK_TIME
@@ -126,7 +126,7 @@ spec:
         - name: ALLOW_FLIGHT
           value: "true"
         - name: SERVER_NAME
-          value: "Chill Minecraft MMO"
+          value: "Chillcraft"
         - name: INIT_MEMORY
           value: "4G"
         - name: MAX_MEMORY
@@ -147,3 +147,39 @@ spec:
       resources:
         requests:
           storage: 20Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-minecraft-java
+spec:
+  rules:
+  - host: minecraft.whisperingmandrake.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minecraft-java
+            port:
+              number: 25585
+  ingressClassName: nginx
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-minecraft-bedrock
+spec:
+  rules:
+  - host: minecraft.whisperingmandrake.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minecraft-bedrock
+            port:
+              number: 19132
+  ingressClassName: nginx
