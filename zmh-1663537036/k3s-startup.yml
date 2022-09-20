@@ -10,6 +10,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
   /etc/rancher/k3s/k3s.yaml
   /var/lib/rancher/k3s/server/node-token
   
-  # /usr/local/bin/k3s-uninstall.s
+  # /usr/local/bin/k3s-uninstall.sh
+  #/usr/local/bin/k3s-agent-uninstall.sh
   # sudo rm -rf /etc/rancher /var/lib/rancher /var/lib/kubelet
   # 
