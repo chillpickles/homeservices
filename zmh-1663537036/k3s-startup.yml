@@ -7,4 +7,9 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --service-cidr "10.43.0.0/16" \
   --cluster-dns "10.43.0.10" -
   
+  /etc/rancher/k3s/k3s.yaml
+  /var/lib/rancher/k3s/server/node-token
+  
+  # /usr/local/bin/k3s-uninstall.s
   # sudo rm -rf /etc/rancher /var/lib/rancher /var/lib/kubelet
+  # 
