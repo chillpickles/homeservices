@@ -72,7 +72,7 @@ kind: Service
 metadata:
   name: grafana
   annotations:
-    metallb.universe.tf/IPaddress-pool: first-pool
+    metallb.universe.tf/IPaddress-pool: grafana
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
@@ -86,3 +86,14 @@ spec:
     app: grafana
   sessionAffinity: None
   type: LoadBalancer
+
+---
+
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: grafana
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.1.241/32
