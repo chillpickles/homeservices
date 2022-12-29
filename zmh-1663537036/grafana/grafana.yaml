@@ -72,10 +72,12 @@ kind: Service
 metadata:
   name: grafana
   annotations:
-    metallb.universe.tf/address-pool: first-pool
+    metallb.universe.tf/IPaddress-pool: first-pool
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
+  # externalIPs:
+  #   - 192.168.1.240
   ports:
     - port: 3000
       protocol: TCP
