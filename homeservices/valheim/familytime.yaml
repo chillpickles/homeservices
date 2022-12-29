@@ -75,7 +75,7 @@ spec:
       containers:
       - name: familytime
         #image: ghcr.io/lloesche/valheim-server:c5f5a69cdeb25b08024fa36fe22f3dc6c7b05fdf
-        image: lloesche/valheim-server:latest
+        image: lloesche/valheim-server:debian10
         imagePullPolicy: Always
         env:
         - name: SERVER_NAME
@@ -91,7 +91,7 @@ spec:
         - name: SERVER_PUBLIC
           value: "true"
         - name: UPDATE_CRON
-          value: "0 */4 * * *"
+          value: "0 3 * * *"
         - name: UPDATE_IF_IDLE
           value: "true"
         - name: RESTART_CRON
@@ -107,9 +107,9 @@ spec:
         - name: BACKUPS_DIRECTORY
           value: "/config/backups"
         - name: BACKUPS_MAX_AGE
-          value: "3"
+          value: "30"
         - name: BACKUPS_MAX_COUNT
-          value: "0"
+          value: "10"
         - name: BACKUPS_IF_IDLE
           value: "false"
         - name: BACKUPS_ZIP
