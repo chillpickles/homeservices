@@ -76,8 +76,6 @@ metadata:
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
-  # externalIPs:
-  #   - 192.168.1.240
   ports:
     - port: 3000
       protocol: TCP
@@ -97,3 +95,19 @@ metadata:
 spec:
   addresses:
   - 192.168.1.241/32
+
+  ---
+
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: grafana-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - grafana
+  nodeSelectors:
+  - matchLabels:
+      kubernetes.io/hostname: zmh-1663537036-001
+#  - matchLabels:
+#      kubernetes.io/hostname: NodeB
