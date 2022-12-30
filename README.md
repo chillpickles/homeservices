@@ -3,7 +3,7 @@
 This is a list of things we'd like to build into our homelab(s)
 
 ## Operators
-- [ ] [cert-manager](https://cert-manager.io/)
+- [x] [cert-manager](https://cert-manager.io/)
 - [ ] [longhorn](https://longhorn.io/)
 - [ ] [minio](https://min.io/)
 - [ ] [sealedSecrets](https://github.com/bitnami-labs/sealed-secrets)
@@ -12,7 +12,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [flux](https://fluxcd.io/)
 - [ ] [vault](https://www.vaultproject.io/docs/secrets/key-management)
 - [x] [metalLB](https://metallb.universe.tf/)
-- [ ] [ingress-nginx](https://github.com/kubernetes/ingress-nginx)
+- [x] [ingress-nginx](https://github.com/kubernetes/ingress-nginx)
 
 ## Workloads
 - [ ] [Jacket](https://github.com/Jackett/Jackett)
