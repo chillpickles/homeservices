@@ -1,0 +1,27 @@
+# need to install on ARM servers: https://github.com/rancher/k3os/issues/702#issuecomment-850246749
+
+apt install apparmor apparmor-utils
+
+# Run lines 3-10 as a single command on your server node to install and configure the server
+
+curl -sfL https://get.k3s.io | sh -s - server \
+  --disable traefik \
+  --disable servicelb \
+  --secrets-encryption \
+  --flannel-backend "host-gw" \
+  --cluster-cidr "10.42.0.0/16" \
+  --service-cidr "10.43.0.0/16" \
+  --cluster-dns "10.43.0.10" -
+  
+# The kubeconfig is stored at this location
+  /etc/rancher/k3s/k3s.yaml
+# The node token to add agents to the server is at this location
+  /var/lib/rancher/k3s/server/node-token
+  
+# Uninstall scripts are stored at this location  
+  /usr/local/bin/k3s-uninstall.sh
+  /usr/local/bin/k3s-agent-uninstall.sh
+  
+# once you uninstall - restart and run this to remove these folders
+  sudo rm -rf /etc/rancher /var/lib/rancher /var/lib/kubelet
+  # 
