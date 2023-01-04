@@ -13,6 +13,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [vault](https://www.vaultproject.io/docs/secrets/key-management)
 - [x] [metalLB](https://metallb.universe.tf/)
 - [x] [ingress-nginx](https://github.com/kubernetes/ingress-nginx)
+- [ ] [guard](https://github.com/kubeguard/guard)
 
 ## Workloads
 - [ ] [Jacket](https://github.com/Jackett/Jackett)
