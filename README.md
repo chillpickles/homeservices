@@ -28,6 +28,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [draw.io](https://github.com/jgraph/drawio)
 - [ ] [oAuth](https://github.com/oauth-io)
 - [ ] [kanboard](https://kanboard.org/)
+- [ ] [gitlab](https://about.gitlab.com/)
 
 ## Game Server
 - [ ] minecraft
