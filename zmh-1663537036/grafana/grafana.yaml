@@ -114,7 +114,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "grafana.chillpickles.digital"
+  - host: "grafana.local.chillpickles.digital"
     http:
       paths:
       - path: /
