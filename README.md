@@ -27,6 +27,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [mastodon](https://github.com/mastodon/mastodon)
 - [ ] [draw.io](https://github.com/jgraph/drawio)
 - [ ] [oAuth](https://github.com/oauth-io)
+- [ ] [kanboard](https://kanboard.org/)
 
 ## Game Server
 - [ ] minecraft
