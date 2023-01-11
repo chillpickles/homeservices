@@ -247,6 +247,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: kube-state-monitor
+  namespace: monitoring
   labels:
     usage: monitoring
 spec:
