@@ -27,7 +27,7 @@ spec:
     - /bin/bash
     - -c
     args: 
-    - minio server /data --console-address :9090
+    - minio server /data --console-address :4000
     volumeMounts:
     - mountPath: /data
       name: localvolume # Corresponds to the `spec.volumes` Persistent Volume
@@ -43,13 +43,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: minio
+  namespace: minio-dev
   annotations:
     metallb.universe.tf/IPaddress-pool: default
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
   ports:
-    - port: 9090
+    - port: 4000
       protocol: TCP
       targetPort: http-minio
   selector:
@@ -68,3 +69,22 @@ spec:
   nodeSelectors:
   - matchLabels:
       kubernetes.io/hostname: zmh-1663537036-001
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-minio
+  namespace: minio-dev
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "minio.local.chillpickles.digital"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minio
+            port:
+              number: 4000
