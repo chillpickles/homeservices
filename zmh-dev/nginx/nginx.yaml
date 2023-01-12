@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.22.1
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: static-config
+            mountPath: /usr/share/nginx/html
+      volumes:
+        - name: static-config
+          configMap:
+            name: fcos-ignition
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k3s-init
+data:
+  k3s-init.sh: |
+    curl -sfL https://get.k3s.io | sh -s - server \
+      --disable traefik \
+      --disable servicelb \
+      --secrets-encryption \
+      --flannel-backend "host-gw" \
+      --cluster-cidr "10.42.0.0/16" \
+      --service-cidr "10.43.0.0/16" \
+      --cluster-dns "10.43.0.10" -
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fcos-ignition
+data:
+  example.ign: |
+    {
+      "ignition": {
+        "version": "3.3.0"
+      },
+     "passwd": {
+       "users": [
+         {
+            "name": "core",
+           "sshAuthorizedKeys": [
+             "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBANgYy5Nvx/QaPhrLwWXQA6uDZI2H3fX31xKDk9CSUwHUow7RF3l1w01II008H9m4yk2E8M02+7EHa8QEGwb+9W6hRwBc/F2Zk47ThSJQWtUHFLQgOfJBmu9PCdlTXI8xWQZ5LDMCdFfs3sFWs0ktxnMFL41KyOwZ+tALRVRj6NSJRfMWoGoVLAB4wGXTcapzuE+97fqiiKBDr9kW1qAd8wIRd7kz/VrijvPha3vlZLKs41pgg0q4Wsy42W82P+4X8e3ijfI7f1Q2aH6hUdl+AIXpA8d9zB2kMOOgQMLS6Uw08LxePJKRRtKqxN3vlxsOTXPd3s9RrpAFwpwPtwWuEdEJiJcfzCGJ9YvDlHzKaPRWidXoB4OAjwS1I3/pEcNUeDvfvhbgzC1UDfTnVzF3ZD0PAtI3ChavZ9EOZ64YuEN1OxbGuZcqAYFf8SbvDpWja3afj2lf8HhhfZhDVUmrPJvYHfIN3bAxDhtLMfjuYRXQqvzNL/f22f4znZj3a00= zmaier@ZMH-PC-007"
+           ]
+         }
+        ]
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zmh-dev-kube
+data:
+  zmh-dev.sh: |
+    curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.197:6443 K3S_TOKEN="K10336868f6ae40ed75fcc7b86db7873f3a86ff41f8d238b762bf2c25284a394b5a::server:4c6903869746299edd689a41f61f5331"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  annotations:
+    metallb.universe.tf/IPaddress-pool: default
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: nginx
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: static-nginx-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - default
+  nodeSelectors:
+  - matchLabels:
+      kubernetes.io/hostname: zmh-1663537036-001
