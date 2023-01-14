@@ -15,7 +15,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
 
 # or
 
-curl -sfL https://get.k3s.io | K3S_URL=<URL HERE> K3S_TOKEN="<TOKEN HERE>"
+curl -sfL https://get.k3s.io | K3S_URL=https://<URL HERE>:6443 K3S_TOKEN=<TOKEN HERE> sh -
   
 # The kubeconfig is stored at this location
   /etc/rancher/k3s/k3s.yaml
