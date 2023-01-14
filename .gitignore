@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 .code-workspace
 homeservices.code-workspace
+=======
+*.code-workspace
+>>>>>>> aa073a9 (added wildcard lmao)
