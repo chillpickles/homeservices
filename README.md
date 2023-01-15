@@ -29,6 +29,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [oAuth](https://github.com/oauth-io)
 - [ ] [kanboard](https://kanboard.org/)
 - [ ] [gitlab](https://about.gitlab.com/)
+- [ ] [tandoor](https://tandoor.dev/)
 
 ## Game Server
 - [ ] minecraft

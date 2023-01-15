@@ -81,7 +81,7 @@ metadata:
   name: grafana
   namespace: monitoring
   annotations:
-    metallb.universe.tf/IPaddress-pool: grafana
+    metallb.universe.tf/IPaddress-pool: default
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
@@ -110,6 +110,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-grafana
+  namespace: monitoring
 spec:
   ingressClassName: nginx
   rules:
