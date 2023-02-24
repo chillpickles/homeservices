@@ -20,12 +20,12 @@ spec:
         ports:
           - containerPort: 80
         volumeMounts:
-          - name: static-config
+          - name: static-pages
             mountPath: /usr/share/nginx/html
       volumes:
-        - name: static-config
+        - name: static-pages
           configMap:
-            name: fcos-ignition
+            name: static-pages
 ---
 apiVersion: v1
 kind: Service
@@ -56,3 +56,23 @@ spec:
   nodeSelectors:
   - matchLabels:
       kubernetes.io/os: linux
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-static
+  labels:
+    name: nginx-static
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "nginx.local.chillpickles.digital"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nginx
+            port: 
+              number: 80

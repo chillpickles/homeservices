@@ -1,0 +1,66 @@
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ingress-unifi
+#   namespace: unifi
+#   annotations:
+#     cert-manager.io/cluster-issuer: "letsencrypt-staging"
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#   - hosts:
+#     - unifi.local.chillpickles.digital
+#     secretName: letsencrypt-staging
+#   rules:
+#   - host: unifi.local.chillpickles.digital
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: unifi-controller-tcp
+#             port:
+#               number: 8443
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: unifi
+  namespace: unifi
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: unifi.local.chillpickles.digital
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: unifi-controller-tcp
+            port:
+              number: 8443
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: set-inform
+  namespace: unifi
+  labels:
+    name: unifi-set-inform
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: inform.local.chillpickles.digital
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/inform"
+        backend:
+          service:
+            name: unifi-controller-tcp
+            port: 
+              number: 8080
