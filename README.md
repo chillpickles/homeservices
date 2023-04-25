@@ -14,6 +14,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [x] [metalLB](https://metallb.universe.tf/)
 - [x] [ingress-nginx](https://github.com/kubernetes/ingress-nginx)
 - [ ] [guard](https://github.com/kubeguard/guard)
+- [ ] [kubeflare](https://kubeflare.com/)
 
 ## Workloads
 - [ ] [Jacket](https://github.com/Jackett/Jackett)
