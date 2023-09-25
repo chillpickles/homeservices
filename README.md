@@ -7,7 +7,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [longhorn](https://longhorn.io/)
 - [ ] [minio](https://min.io/)
 - [ ] [sealedSecrets](https://github.com/bitnami-labs/sealed-secrets)
-- [ ] [prometheus](https://prometheus.io/)
+- [x] [prometheus](https://prometheus.io/)
 - [ ] [cubeFS](https://cubefs.io/)
 - [ ] [flux](https://fluxcd.io/)
 - [ ] [vault](https://www.vaultproject.io/docs/secrets/key-management)
@@ -30,6 +30,7 @@ This is a list of things we'd like to build into our homelab(s)
 - [ ] [oAuth](https://github.com/oauth-io)
 - [ ] [kanboard](https://kanboard.org/)
 - [ ] [gitlab](https://about.gitlab.com/)
+- [ ] [tandoor](https://tandoor.dev/)
 
 ## Game Server
 - [ ] minecraft
