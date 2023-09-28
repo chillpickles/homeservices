@@ -1,0 +1,9 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: wireguard
+  namespace: metallb-system
+spec:
+  addresses:
+  - 10.79.1.101-10.79.1.105
+  autoAssign: true

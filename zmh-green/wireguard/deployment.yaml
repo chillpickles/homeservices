@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wireguard
+  labels:
+    name: wireguard
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard-server
+  namespace: wireguard
+  labels:
+    app: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      containers:
+      - name: wireguard-server
+        image: docker.io/linuxserver/wireguard
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/Chicago"
+        ports:
+        - name: udp-port
+          containerPort: 51820
+          protocol: UDP
+        volumeMounts:
+        - name: wireguard-config
+          mountPath: /config
+      volumes:
+      - name: wireguard-config
+        configMap:
+          name: wireguard-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wireguard-server
+  namespace: wireguard
+  annotations:
+    metallb.universe.tf/IPaddress-pool: wireguard
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: udp-wireguard
+    protocol: UDP
+    port: 51820
+    targetPort: 51820
+  selector:
+    app: wireguard
