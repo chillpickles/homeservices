@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wireguard-conf
+data:
+  wg0.conf: |
+    [Interface]
+    # Name = wireguard.chillpickles
+    Address = 73.166.6.222
+    PrivateKey = 8LbeIuuff3hP/uNyFfekkueTYozVyGcw5Ad36macJlI=
+
+    [Peer]
+    # Name = wireguard.mwthink
+    PublicKey = fG5K+Ar9td6pdm/dS+0x5+Cb8tg0+DcDHzoHWTaMU3c=
+    AllowedIPs = 10.20.6.1/16
+    Endpoint = 76.183.113.107:51820

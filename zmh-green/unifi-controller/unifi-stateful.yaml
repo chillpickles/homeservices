@@ -107,7 +107,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: unifi-controller
-        image: lscr.io/linuxserver/unifi-controller:version-7.3.76
+        image: lscr.io/linuxserver/unifi-controller:version-7.3.83
         imagePullPolicy: IfNotPresent
         ports:
         - name: stun

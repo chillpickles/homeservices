@@ -1,0 +1,131 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: game
+  labels:
+    name: game
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zmh-minecraft-001
+  namespace: game
+  annotations:
+    metallb.universe.tf/Ipaddress-pool: default
+  labels:
+    app: paper-minecraft
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: interface
+    port: 25565
+    protocol: TCP
+    targetPort: interface
+  - name: rcon
+    port: 25570
+    protocol: TCP
+    targetPort: rcon
+  selector:
+    app: paper-minecraft
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: paper-minecraft
+  namespace: game
+spec:
+  selector:
+    matchLabels:
+      app: minecraft # has to match .spec.template.metadata.labels
+      type: latest-build
+  serviceName: "paper-minecraft"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: minecraft # has to match .spec.selector.matchLabels
+        type: latest-build
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: paper-minecraft
+        image: itzg/minecraft-server:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+        env:
+        - name: TYPE
+          value: "PAPER"
+        - name: VERSION
+          value: "1.19"
+        - name: SERVER_PORT
+          value: "25565"
+        - name: OVERRIDE_SERVER_PROPERTIES
+          value: "false"
+        - name: OPS
+          value: "chillpickles"
+        - name: EULA
+          value: "true"
+        - name: MOTD
+          value: "Welcome to a Chillcraft Experience"
+        - name: DIFFICULTY
+          value: "normal"
+        - name: MAX_TICK_TIME
+          value: "60000"
+        - name: SPAWN_PROTECTION
+          value: "10"
+        - name: VIEW_DISTANCE
+          value: "20"
+        - name: OVERRIDE_ICON
+          value: "false"
+        - name: ENABLE_RCON
+          value: "true"
+        - name: RCON_PORT
+          value: "25575"
+        - name: RCON_PASSWORD
+          value: "PurplePorpoise"
+        - name: MAX_PLAYER
+          value: "20"
+        - name: ALLOW_NETHER
+          value: "true"
+        - name: LEVEL
+          value: "average_world"
+        - name: ALLOW_FLIGHT
+          value: "true"
+        - name: SERVER_NAME
+          value: "Chillcraft"
+        - name: INIT_MEMORY
+          value: "2G"
+        - name: MAX_MEMORY
+          value: "4G"
+        ports:
+        - name: interface
+          containerPort: 25565
+          protocol: TCP
+        - name: rcon
+          containerPort: 25570
+          protocol: TCP
+        volumeMounts:
+        - name: papermc-save
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: papermc-save
+    spec:
+      volumeMode: Filesystem
+      volumeBindingMode: WaitForFirstConsumer
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 20Gi

@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Documents"
+		},
+		{
+			"path": "../scripts"
+		},
+		{
+			"path": "../.expressjs"
+		},
+		{
+			"path": "../dumb-expressjs-site"
+		},
+		{
+			"path": "../steamcmd-server-images"
+		}
+	],
+	"settings": {}
+}
