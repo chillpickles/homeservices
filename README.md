@@ -1,6 +1,6 @@
 # Homeservices
 
-This is a list of things we'd like to build into our homelab(s)
+This is a list of things I'd like to build into the homelab(s)
 
 ## Operators
 - [x] [cert-manager](https://cert-manager.io/)
