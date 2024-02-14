@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: zmh-blue
+  namespace: default
+subsets:
+- addresses:
+  - ip: 10.79.1.80
+  ports:
+  - port: 6443
+    protocol: TCP
+    name: https
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zmh-blue
+  namespace: default
+spec:
+  ports:
+  - name: https
+    port: 6443
+    protocol: TCP
+  selector: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-zmh-blue
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "k3s.local.chillpickles.digital"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: zmh-blue
+            port:
+              number: 6443
