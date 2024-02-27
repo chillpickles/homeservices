@@ -4351,6 +4351,20 @@ spec:
         app.kubernetes.io/version: v1.6.0
         app: longhorn-manager
     spec:
+      # adding nodeSelector to remove from etcd and controlplane nodes
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - zmh-blue-001
+                - zmh-blue-002
+                - zmh-blue-003
+                - zmh-rock5-001
+                - zmh-rock5-002
       containers:
       - name: longhorn-manager
         image: longhornio/longhorn-manager:v1.6.0
@@ -4456,6 +4470,20 @@ spec:
         app.kubernetes.io/version: v1.6.0
         app: longhorn-driver-deployer
     spec:
+      # adding nodeSelector to remove from etcd and controlplane nodes
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - zmh-blue-001
+                - zmh-blue-002
+                - zmh-blue-003
+                - zmh-rock5-001
+                - zmh-rock5-002
       initContainers:
         - name: wait-longhorn-manager
           image: longhornio/longhorn-manager:v1.6.0
@@ -4528,6 +4556,19 @@ spec:
     spec:
       serviceAccountName: longhorn-ui-service-account
       affinity:
+        # adding nodeSelector to remove from etcd and controlplane nodes
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - zmh-blue-001
+                - zmh-blue-002
+                - zmh-blue-003
+                - zmh-rock5-001
+                - zmh-rock5-002
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1

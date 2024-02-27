@@ -56,7 +56,7 @@ rpi3 with coreos is underway - idk how I didn't know what this UEFI firmware ima
 
 # 20240202
 
-arm is strange, i'm trying to learn what UEFI booting even is I guess? the pis don't like to boot from the disc drive once coreOS  is written to it so - unfortunate. Guess we'll try the pine boards
+arm is strange, i'm trying to learn what UEFI booting even is I guess? the pis don't like to boot from the disc drive once coreOS  is written to it so - unfortunate. Guess we'll try the pine boards. This is fwupdmgr get-upgradeslikely a consequence of using arm boards which not every aarch64 image will support
 
 [pineh64b u-boot](https://github.com/as365n4/update_U-Boot_on_Device/blob/c7d9bd6523967e2cb89837f22ebea89f03f657c3/arm64%20update%20U-Boot%20on%20device%20(PineH64B).pdf) just need to `sudo apt install python3-setuptools` as well. This is promising maybe, if the Pine Boards cooperate with CoreOS I can keep the pis on raspbian where they're happiest
 
@@ -84,7 +84,7 @@ Since I'm not doing router on a stick my setup is
             VLAN 30,
           ]
         }
-      }
+      }fwupdmgr get-upgrades
     }
 
 The Mikrotik switch ([SwOS](https://wiki.mikrotik.com/wiki/SwOS/CSS326)) expects the ingress SFP port to have DefaultVLAN set to `[1]` and the rest of the ports set to DefaultVLAN `[30]` with VLAN Mode `[enabled]` on all of them to make sure that all the devices plugged into the egress ports are "on" `VLAN30`. The VLANs tab has all of the VLANs added to this list, and currently all of them are allowed to reach the ports - *my access from the home network side is going to take some time to develop*. Since `LAN2` in the `USG` requires a VLAN be set for a `network` on that interface, it is set to `VLAN30` by default, which means that *tagged traffic will be sent over to `VLAN30` -> `LAN2` -> `CSS326` -> and then allowed to reach the machines on the access ports which allow `VLAN30`*
@@ -95,7 +95,7 @@ anyways fuck this shit, where are those goddamn k3s commands
 
 # 20240210
 
-fixing this VLAN mess in my home network has revived the `zmh-green` cluster which is both astounding, delightful and terrifying. updating the unifi controller image, putting the backup into it and being able to use the mobile app again for the first time in like a year feels very nice
+fixing this VLAN mess in my home network has revived the `zmh-green` cluster which is both astounding, delightful and terrifying. updating the unifi controller image, putting the backup into it and being able fwupdmgr get-upgradesto use the mobile app again for the first time in like a year feels very nice
 
 all of the kubernetes services have survived, my first working ingress controller and my sadge attempts to get cert-manager working. since I've got the RPIs working as the etcd cluster, we're gonna be adding a control plane node using some old old sff PCs with i3s that can act as control plane
 

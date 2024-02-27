@@ -96,3 +96,12 @@ these results seem to be halving the iops? idk what iops is I just work here
 cool so, now to follow the ingress instructions:
 
         USER=<USERNAME_HERE>; PASSWORD=<PASSWORD_HERE>; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
+
+## 20240227
+
+here is a [useful answer](https://stackoverflow.com/a/37419124) for why you would choose to use nodeAffinity over nodeSelector. Also another (guide)[https://blog.kubecost.com/blog/kubernetes-node-affinity/] Lets add it
+
+lines
+- 4354
+- 4459
+- 4545

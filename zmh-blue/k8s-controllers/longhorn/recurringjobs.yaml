@@ -1,0 +1,86 @@
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-gamesrv
+  namespace: longhorn-system
+spec:
+  cron: "5 0/2 * * *"
+  task: "snapshot"
+  groups:
+  - gamesrv
+  retain: 14
+  concurrency: 3
+  labels:
+    app: game-server
+    cadence: 2-hours
+
+---
+
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-active
+  namespace: longhorn-system
+spec:
+  cron: "25 0/9 * * *"
+  task: "snapshot"
+  groups:
+  - active
+  retain: 23
+  concurrency: 3
+  labels:
+    cadence: 6-hours
+
+---
+
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-stable
+  namespace: longhorn-system
+spec:
+  cron: "5 7 * * *"
+  task: "snapshot"
+  groups:
+  - default
+  - stable
+  retain: 16
+  concurrency: 3
+  labels:
+    cadence: daily-morning
+
+---
+
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-static
+  namespace: longhorn-system
+spec:
+  cron: "45 20 * * 3"
+  task: "snapshot"
+  groups:
+  - static
+  retain: 33
+  concurrency: 3
+  labels:
+    cadence: weekly-evening
+
+---
+
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-cleaner
+  namespace: longhorn-system
+spec:
+  cron: "45 4 4 * *"
+  task: "snapshot-delete"
+  groups:
+  - default
+  - static
+  - stable
+  retain: 35
+  concurrency: 3
+  labels:
+    cadence: monthly

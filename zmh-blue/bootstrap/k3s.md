@@ -34,7 +34,7 @@ The kubeconfig is stored at this location
 
     sudo cat /etc/rancher/k3s/k3s.yaml
 
-The node token to add agents to the server is at this location
+The node token to add server nodes to the cluster is at this location
 
     sudo cat /var/lib/rancher/k3s/server/node-token
 
