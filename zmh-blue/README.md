@@ -114,3 +114,7 @@ cluster work, now to make cluster do work
 
     hmm well you know I was thinking abt getting longhorn working, and seeing if I could automate my hyve zeus boxes to spin up and down on a schedule 🫦 and I have this little rk3588 NAS to configure.. kubernetes operators first I guess
 
+# 20240215
+
+followed the ubuntu installer to use LVM volumes? [deactivate those bitches](https://forum.level1techs.com/t/unmount-unmap-lvm-volumes/185342)
+

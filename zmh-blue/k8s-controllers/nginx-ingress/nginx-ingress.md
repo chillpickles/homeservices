@@ -14,3 +14,7 @@ I also used `Kind: Endpoint` objects to weasel the ingress controller into servi
 ## 20240214
 
 pulled `v1.8.2`
+
+##20240226
+
+changed line [365] from type NodePort to type LoadBalancer - so that metallb loadbalances the service to be exposed to LAN
