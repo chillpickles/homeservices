@@ -34,11 +34,11 @@ The kubeconfig is stored at this location
 
     sudo cat /etc/rancher/k3s/k3s.yaml
 
-The node token to add agents to the server is at this location
+The node token to add server nodes to the cluster is at this location
 
     sudo cat /var/lib/rancher/k3s/server/node-token
 
-### This node token needs to be copied around manually, until the idiot sysadmin decides to automate this process further
+### ~~This node token needs to be copied around manually, until the idiot sysadmin decides to automate this process further~~
 
 ---
 
@@ -70,3 +70,5 @@ we now have a working cluster. I think I need a third control-plane box but if i
 and voila
 
     curl -fL https://get.k3s.io | K3S_TOKEN=$agent_token sh -s - agent --server https://10.79.1.80:6443
+
+    

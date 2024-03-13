@@ -24,7 +24,7 @@
         "path": "/etc/hostname",
         "contents": {
           "compression": "",
-          "source": "data:,zmh-blue-001"
+          "source": "data:,zmh-blue-002"
         },
         "mode": 420
       },

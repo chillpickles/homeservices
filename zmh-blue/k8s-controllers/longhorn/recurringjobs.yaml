@@ -1,0 +1,123 @@
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-gamesrv
+  namespace: longhorn-system
+spec:
+  cron: "5 0/2 * * *"
+  task: "snapshot"
+  groups:
+  - gamesrv
+  retain: 28
+  concurrency: 3
+  labels:
+    app: game-server
+    cadence: 2-hours
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-gamesrv
+  namespace: longhorn-system
+spec:
+  cron: "15 1 1/2 * *"
+  task: "backup"
+  groups:
+  - gamesrv
+  retain: 30
+  concurrency: 3
+  labels:
+    app: game-server
+    cadence: alternating-days-backup
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-active
+  namespace: longhorn-system
+spec:
+  cron: "25 0/9 * * *"
+  task: "snapshot"
+  groups:
+  - active
+  retain: 30
+  concurrency: 3
+  labels:
+    cadence: 6-hours
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-active
+  namespace: longhorn-system
+spec: 
+  cron: "45 1 * * 3"
+  task: "backup"
+  groups:
+  - active
+  retain: 8
+  concurrency: 3
+  labels:
+    cadence: weekly-backup
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-stable
+  namespace: longhorn-system
+spec:
+  cron: "5 7 * * *"
+  task: "snapshot"
+  groups:
+  - default
+  - stable
+  retain: 18
+  concurrency: 3
+  labels:
+    cadence: daily-morning
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-stable
+  namespace: longhorn-system
+spec:
+  cron: "15 8 1,15 * *"
+  task: "backup"
+  groups:
+  - default
+  - stable
+  retain: 12
+  concurrency: 3
+  labels: 
+    cadence: twice-monthly-backup
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-static
+  namespace: longhorn-system
+spec:
+  cron: "45 20 * * 3"
+  task: "snapshot"
+  groups:
+  - static
+  retain: 6
+  concurrency: 3
+  labels:
+    cadence: weekly-evening
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-static
+  namespace: longhorn-system
+spec:
+  cron: "15 21 5 * *"
+  task: "backup"
+  groups:
+  - static
+  retain: 6
+  concurrency: 3
+  labels:
+    cadence: monthly-evening

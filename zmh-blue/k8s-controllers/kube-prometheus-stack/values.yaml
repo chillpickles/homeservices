@@ -1,0 +1,20 @@
+## Helm Configuration for zmh-blue cluster last updated 20240313
+
+grafana:
+  service:
+    type: "LoadBalancer"
+  ingress:
+    enabled: "true"
+    ingressClassName: "nginx"
+    hosts: ["grafana.blue.chillpickles.digital"]
+prometheus:
+  prometheusSpec:
+    retention: 180d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn-stable
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests: 
+              storage: 50Gi
