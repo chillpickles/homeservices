@@ -3,8 +3,8 @@
 This is a list of things I'd like to build into the homelab(s)
 
 ## Operators
-- [x] [cert-manager](https://cert-manager.io/)
-- [ ] [longhorn](https://longhorn.io/)
+- [ ] [cert-manager](https://cert-manager.io/)
+- [x] [longhorn](https://longhorn.io/)
 - [ ] [minio](https://min.io/)
 - [ ] [sealedSecrets](https://github.com/bitnami-labs/sealed-secrets)
 - [x] [prometheus](https://prometheus.io/)

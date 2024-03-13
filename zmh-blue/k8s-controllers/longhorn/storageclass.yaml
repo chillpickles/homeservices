@@ -12,12 +12,7 @@ parameters:
   fromBackup: ""
   fsType: "ext4"
   dataLocality: "best-effort"
-  recurringJobSelector: '[
-    {
-      "name":"gamesrv",
-      "isGroup":true,
-    },
-  ]'
+  recurringJobSelector: '[{"name":"gamesrv", "isGroup":true}]'
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -33,12 +28,7 @@ parameters:
   fromBackup: ""
   fsType: "ext4"
   dataLocality: "best-effort"
-  recurringJobSelector: '[
-    {
-      "name":"active",
-      "isGroup":true,
-    },
-  ]'
+  recurringJobSelector: '[{"name":"active", "isGroup":true}]'
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -54,12 +44,7 @@ parameters:
   fromBackup: ""
   fsType: "ext4"
   dataLocality: "best-effort"
-  recurringJobSelector: '[
-    {
-      "name":"stable",
-      "isGroup":true,
-    },
-  ]'
+  recurringJobSelector: '[{"name":"stable", "isGroup":true}]'
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -75,9 +60,4 @@ parameters:
   fromBackup: ""
   fsType: "ext4"
   dataLocality: "best-effort"
-  recurringJobSelector: '[
-    {
-      "name":"static",
-      "isGroup":true,
-    },
-  ]'
+  recurringJobSelector: '[{"name":"static", "isGroup":true}]'
