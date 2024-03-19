@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: turtlemc
+  namespace: gamesrv
+spec:
+  selector:
+    matchLabels:
+      app: minecraft # has to match .spec.template.metadata.labels
+      type: latest-build
+      ops: turtle
+  serviceName: "turtlemc"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: minecraft # has to match .spec.selector.matchLabels
+        type: latest-build
+        ops: turtle
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: paper-minecraft
+        image: itzg/minecraft-server:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "2000m"
+            memory: "8Gi"
+          limits:
+            cpu: "4000m"
+            memory: "12Gi"
+        env:
+        - name: TYPE
+          value: "PAPER"
+        - name: VERSION
+          value: "1.20.4"
+        - name: SERVER_PORT
+          value: "25565"
+        - name: OVERRIDE_SERVER_PROPERTIES
+          value: "false"
+        - name: OPS
+          value: "angryninja"
+        - name: EULA
+          value: "true"
+        - name: MOTD
+          value: "Welcome to a Chillcraft Experience"
+        - name: DIFFICULTY
+          value: "normal"
+        - name: MAX_TICK_TIME
+          value: "60000"
+        - name: SPAWN_PROTECTION
+          value: "10"
+        - name: VIEW_DISTANCE
+          value: "20"
+        - name: OVERRIDE_ICON
+          value: "false"
+        - name: ENABLE_RCON
+          value: "true"
+        - name: RCON_PORT
+          value: "25570"
+        - name: RCON_PASSWORD
+          value: "PurplePorpoise"
+        - name: MAX_PLAYER
+          value: "20"
+        - name: ALLOW_NETHER
+          value: "true"
+        - name: LEVEL
+          value: "dwarvenmine"
+        - name: ALLOW_FLIGHT
+          value: "true"
+        - name: SERVER_NAME
+          value: "TurtleCraft"
+        - name: INIT_MEMORY
+          value: "8G"
+        - name: MAX_MEMORY
+          value: "12G"
+        ports:
+        - name: interface
+          containerPort: 25565
+          protocol: TCP
+        - name: rcon
+          containerPort: 25570
+          protocol: TCP
+        volumeMounts:
+        - name: turtlemc-data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: turtlemc-data
+    spec:
+      volumeMode: Filesystem
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: longhorn-gamesrv
+      resources:
+        requests:
+          storage: 20Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: turtlemc
+  namespace: gamesrv
+  annotations:
+    metallb.univers.tf/address-pool: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: minecraft
+    type: latest-build
+    ops: turtle
+  ports:
+  - name: interface
+    port: 25565
+    protocol: TCP
+    targetPort: interface
+  - name: rcon
+    port: 25570
+    protocol: TCP
+    targetPort: rcon

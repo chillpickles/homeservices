@@ -122,3 +122,7 @@ followed the ubuntu installer to use LVM volumes? [deactivate those bitches](htt
 # 20240312
 
 longhorn controller manifests have been written, working to deploy a minecraft server and start testing my mental sanity when managing these volumes. Until I have minio setup in the home network I don't think I want to run it with terraform, so helm configs for kube-prometheus-stack will be done with just a values file and `helm` commands
+
+# 20240313
+
+all of the k8s controllers are setup and working as expected, kubeflare and cert-manager are next after I provision some game servers.

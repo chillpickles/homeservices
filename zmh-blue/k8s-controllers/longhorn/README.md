@@ -105,3 +105,7 @@ lines
 - 4354
 - 4459
 - 4545
+
+## 20240313
+
+storageClass and recurringJobs have been deployed and work as expected, volumes created by a storageClass get their groups assigned correctly and we're off to the races
