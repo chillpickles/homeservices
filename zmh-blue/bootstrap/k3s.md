@@ -70,5 +70,3 @@ we now have a working cluster. I think I need a third control-plane box but if i
 and voila
 
     curl -fL https://get.k3s.io | K3S_TOKEN=$agent_token sh -s - agent --server https://10.79.1.80:6443
-
-    

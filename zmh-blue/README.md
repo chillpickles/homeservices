@@ -126,3 +126,19 @@ longhorn controller manifests have been written, working to deploy a minecraft s
 # 20240313
 
 all of the k8s controllers are setup and working as expected, kubeflare and cert-manager are next after I provision some game servers.
+
+# 20250202
+
+this shit got dropped cuz I bought a house
+
+so far we have:
+ - massively upgraded our unifi gear, we're now 10gig LAN capable, and we have capability to integrate unifi-protect
+ - upgraded from LTE to gigabit fiber
+ - kept the synology box alive, with a hot spare no less
+ - killed another proxmox boot drive
+ - gotten some of the old 7000 series intel processors into motherboards that work
+ - gotten a pcie extension so that we can get the dual node rackmount case running
+
+new house has an office with a RACK IN IT, and NO STAIRS to run up and down so troubleshooting will only be slightly less annoying. the KVM I have doesn't really support HDMI, and I haven't tried to convert everything to DVI yet so we still rock the screen sitting on the ground, and the $5 keyboard for manual bullshit
+
+the `zmh-blue` cluster died in the old house cuz whatever hacky etcd only shit I put on the rpis died, which tanked my desire to run a kubernetes cluster without doing [kubernetes the hard way](https://github.com/kelseyhightower/kubernetes-the-hard-way) so that we can learn exactly, precisely how to manage the different components of a kubernetes cluster. 

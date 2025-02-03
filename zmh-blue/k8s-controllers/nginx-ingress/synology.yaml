@@ -30,12 +30,11 @@ spec:
   - name: http
     port: 5000
     protocol: TCP
-    targetPort: http
   - name: https
     port: 5001
     protocol: TCP
-    targetPort: https
-  selector: {}
+  selector:
+    machine-hostname: zmh-rackstation
 ---
 apiVersion: v1
 kind: Service
@@ -47,8 +46,8 @@ spec:
   - name: photos
     port: 443
     protocol: TCP
-    targetPort: photos
-  selector: {}
+  selector: 
+    machine-hostname: zmh-rackstation
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
