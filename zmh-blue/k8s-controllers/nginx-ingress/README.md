@@ -15,6 +15,12 @@ I also used `Kind: Endpoint` objects to weasel the ingress controller into servi
 
 pulled `v1.8.2`
 
-##20240226
+## 20240226
 
 changed line [365] from type NodePort to type LoadBalancer - so that metallb loadbalances the service to be exposed to LAN
+
+## 20240312
+
+pulling `v1.12.0`
+
+- `kind: endpoint` manifests have been replaced with `endpointSlices` and I haven't messed with those enough. removing those entries for now, will experiment later
