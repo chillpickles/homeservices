@@ -1,4 +1,4 @@
-## Helm Configuration for zmh-blue cluster last updated 20240313
+## Helm Configuration for zmh-blue cluster last updated 20250312
 
 grafana:
   service:
@@ -10,11 +10,3 @@ grafana:
 prometheus:
   prometheusSpec:
     retention: 180d
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: longhorn-stable
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests: 
-              storage: 50Gi

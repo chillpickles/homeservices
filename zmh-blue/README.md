@@ -117,6 +117,9 @@ cluster work, now to make cluster do work
 # 20240215
 
 followed the ubuntu installer to use LVM volumes? [deactivate those bitches](https://forum.level1techs.com/t/unmount-unmap-lvm-volumes/185342)
+     ```If you run lvs you’ll see the Attr column, this is a bunch of flags showing stats per LV. If the Attr column shows “a”, then the LV is “active” and can be mounted. To fully unmount a drive you need to deactivate the LV, usually with lvchange -an vg/lv and/or the entire VG with vgchange -an vg/lv. A deactivated LV will not show “a” in the Attr column.
+
+    Once the LV and VG have been deactivated it’s safe to remove the disk. Though in general I don’t bother deactivating LVs/VGs for removable drives, simply unplugging it is fine.```
 
 
 # 20240312
@@ -142,3 +145,26 @@ so far we have:
 new house has an office with a RACK IN IT, and NO STAIRS to run up and down so troubleshooting will only be slightly less annoying. the KVM I have doesn't really support HDMI, and I haven't tried to convert everything to DVI yet so we still rock the screen sitting on the ground, and the $5 keyboard for manual bullshit
 
 the `zmh-blue` cluster died in the old house cuz whatever hacky etcd only shit I put on the rpis died, which tanked my desire to run a kubernetes cluster without doing [kubernetes the hard way](https://github.com/kelseyhightower/kubernetes-the-hard-way) so that we can learn exactly, precisely how to manage the different components of a kubernetes cluster. 
+
+# 20250310
+
+- tested kubernetes the hard way, and honestly I've learned way more from doing that than messing with k3s. I have to recommend this as a step in learning k8s going forward. 
+- running an etcd cluster separately from master nodes doesn't sound right anymore, and ignores the point of bundling the components of your control plane onto your nodes
+- I could try patching together my own control plane cluster from scratch, but k3s seems like it's going to massively simplify that and allow uninstall super easy as well
+
+k8s-the-hard-way covers bootstrapping a cluster, which starts with creating a CA that the rest of the cluster certs are signed by. I'm not at all ready to start managing a CA out of band, and relying on k3s to generate the certs, rotate them as needed and keep the etcd cluster internal to the server nodes makes the most sense for now. We'll just have to implement better backups for the etcd store, ensuring that they get copied out to OMV or Synology
+
+Shit, I mean the sizing guide scales 1 RPI to 350 agents?
+|Server CPU |	Server RAM |	Number of Agents |
+|-----------|------------|-------------------|
+|2 |	4 GB |	0-350 |
+| 4	| 8 GB	| 351-900 |
+| 8	| 16 GB	| 901-1800 |
+| 16+	| 32 GB	| 1800+ |
+
+sure the 3b+ rpi only has 3GB of ram, but sheiiiitt I'm overthinking this HA control plane shit. I can run the 3 pis as the base cluster, and add on more compute as I need, OMV will be the backup to the cluster and bing bang boom
+why even have these big ass zeus boxes, I'll probably literally never do anything with them 😢
+
+so we want to run 1 server and 1 agent node since this will be a "managemnent cluster" of sorts, and I'll deal with setting up a miniPC for a services cluster later
+rpi-001 - server
+rpi-002 - agent1
