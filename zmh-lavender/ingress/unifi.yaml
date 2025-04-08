@@ -1,0 +1,49 @@
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: unifi
+  namespace: default
+  labels:
+    kubernetes.io/service-name: unifi
+addressType: IPv4
+ports:
+  - port: 443
+endpoints:
+  - addresses:
+      - "192.168.1.1"
+    conditions:
+      ready: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi
+  namespace: default
+spec:
+  clusterIP: "None"
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 443
+    name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: unifi
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: unifi.lavender.chillpickles.digital
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: unifi
+            port:
+              name: http

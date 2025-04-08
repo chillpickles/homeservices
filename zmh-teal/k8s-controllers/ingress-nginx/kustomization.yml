@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deploy.yml
+
+patches:
+  - path: metallb-compat.yml
+    target:
+      kind: Service
+      name: ingress-nginx-controller
+
+# helmCharts:
+# - name: ingress-nginx
+#   repo: https://kubernetes.github.io/ingress-nginx
+#   releaseName: ingress-nginx
+#   version: 1.12.1
+#   valuesFile: values.yml

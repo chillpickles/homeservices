@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: netboot
+spec:
+  selector:
+    app: netboot
+  ports:
+  - port: 8080
+    targetPort: 80
+    name: assets
+  - port: 3000
+    targetPort: 3000
+    name: ui
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netboot-tftp
+  annotations:
+    metallb.io/address-pool: default
+spec:
+  selector:
+    app: netboot
+  type: LoadBalancer
+  ports:
+  - port: 69
+    targetPort: 69
+    protocol: UDP
+    name: tftp
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: netboot
+spec:
+  selector:
+    matchLabels:
+      app: netboot
+  serviceName: ""
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: netboot
+    spec:
+      containers:
+      - name: netboot
+        image: ghcr.io/netbootxyz/netbootxyz
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "500Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        env:
+        - name: MENU_VERSION
+          value: "2.0.86"
+        - name: NGINX_PORT
+          value: "80"
+        - name: WEB_APP_PORT
+          value: "3000"
+        - name: TFTPD_OPTS
+          value: "--tftp-single-port"
+        - name: live_endpoint
+          value: "netboot-assets.lavender.chillpickles.digital"
+        ports:
+        - containerPort: 80
+          name: assets
+        - containerPort: 3000
+          name: ui
+        - containerPort: 69
+          name: tftp
+          protocol: UDP
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: assets
+          mountPath: /assets
+  volumeClaimTemplates:
+  - metadata:
+      name: config
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+  - metadata:
+      name: assets
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 30Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: netboot-ui
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: netboot.lavender.chillpickles.digital
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: netboot
+            port: 
+              name: ui
+  - host: netboot-assets.lavender.chillpickles.digital
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: netboot
+            port:
+              name: assets

@@ -1,0 +1,12 @@
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: games
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - games
+  aggregationLength: 32
+  localPref: 100
+  communities:
+  - 65000:65001
