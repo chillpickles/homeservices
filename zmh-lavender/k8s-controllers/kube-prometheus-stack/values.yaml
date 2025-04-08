@@ -1,0 +1,13 @@
+## Helm Configuration for zmh-blue cluster last updated 20250312
+nameOverride: "monitoring"
+namespaceOverride: "monitoring"
+grafana:
+  service:
+    type: "ClusterIP"
+  ingress:
+    enabled: "true"
+    ingressClassName: "nginx"
+    hosts: ["grafana.lavender.chillpickles.digital"]
+prometheus:
+  prometheusSpec:
+    retention: 180d

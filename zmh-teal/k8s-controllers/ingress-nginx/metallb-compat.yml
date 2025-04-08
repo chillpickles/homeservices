@@ -1,0 +1,4 @@
+- op: add
+  path: /metadata/annotations
+  value: 
+    metallb.io/address-pool: default

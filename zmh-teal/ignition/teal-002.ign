@@ -1,0 +1,49 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "groups": [
+          "docker",
+          "wheel",
+          "sudo"
+        ],
+        "name": "zmaier",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBANgYy5Nvx/QaPhrLwWXQA6uDZI2H3fX31xKDk9CSUwHUow7RF3l1w01II008H9m4yk2E8M02+7EHa8QEGwb+9W6hRwBc/F2Zk47ThSJQWtUHFLQgOfJBmu9PCdlTXI8xWQZ5LDMCdFfs3sFWs0ktxnMFL41KyOwZ+tALRVRj6NSJRfMWoGoVLAB4wGXTcapzuE+97fqiiKBDr9kW1qAd8wIRd7kz/VrijvPha3vlZLKs41pgg0q4Wsy42W82P+4X8e3ijfI7f1Q2aH6hUdl+AIXpA8d9zB2kMOOgQMLS6Uw08LxePJKRRtKqxN3vlxsOTXPd3s9RrpAFwpwPtwWuEdEJiJcfzCGJ9YvDlHzKaPRWidXoB4OAjwS1I3/pEcNUeDvfvhbgzC1UDfTnVzF3ZD0PAtI3ChavZ9EOZ64YuEN1OxbGuZcqAYFf8SbvDpWja3afj2lf8HhhfZhDVUmrPJvYHfIN3bAxDhtLMfjuYRXQqvzNL/f22f4znZj3a00=",
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIFEbmZG6QyvxjdnbfTzOnUptLBpXp7DwTPcXtkkyVLnf54fK1ipILoyMqIf3h9njQDH80Pq199HO2YIKn/w14xwVSRfNfrMG5NGoYKf+lw9W6SDqO2Gdj7CsB7vglSHIW9tV4ELEI2zljjRgqaF2u206TcMFT9Tm5Cnk+0qBs2paKBB0py9HvIGS0vWOUGAhdT0xO4UCs1BkDFmfnxwvXgLEdp3CYBOdOYURvELpsXq96lNVB0B+76E0mqN6TBACxneV9IUfSP7U/dNEOInUIBsF5OsLs/8oUsGcpmZD/vl93+dmuJx/n6+4SJg74VUORVapu8639btYxQ8DdGjlM1tEhxce6Agor2vmDOO76j5emsNEvYCV0FjDzpF47+nU/FXd9LlrSH+UFM9EpsY43KzK1tBnc+/MYfCjaUH8nRS5wMLskoIX17H6dkUEUNJeX1heO7hZQq3mEqaH6wYE0EHBI2SHTATDktZSLKejjEhHF3JmdgWBJtvMl3UXJzXM="
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,zmh-teal-002"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,W3VwZGF0ZXNdCnN0cmF0ZWd5ID0gInBlcmlvZGljIgpbW3VwZGF0ZXMucGVyaW9kaWMud2luZG93XV0KZGF5cyA9IFsgIk1vbiIsICJUdWUiIF0Kc3RhcnRfdGltZSA9ICIwOTowMCIKbGVuZ3RoX21pbnV0ZXMgPSA2MAo="
+        }
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "enabled": false,
+        "mask": true,
+        "name": "rpm-ostree-countme.timer"
+      }
+    ]
+  }
+}

@@ -5,7 +5,7 @@ This is a list of things I'd like to build into the homelab(s)
 ## Operators
 - [ ] [cert-manager](https://cert-manager.io/)
 - [ ] [longhorn](https://longhorn.io/)
-- [ ] [minio](https://min.io/)
+- [x] [minio](https://min.io/)
 - [ ] [sealedSecrets](https://github.com/bitnami-labs/sealed-secrets)
 - [x] [prometheus](https://prometheus.io/)
 - [ ] [cubeFS](https://cubefs.io/)

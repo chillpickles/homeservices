@@ -1,0 +1,11 @@
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: games
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - games
+  nodeSelectors:
+  - matchLabels:
+      kubernetes.io/hostname: zmh-teal-002

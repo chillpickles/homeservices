@@ -1,0 +1,78 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+    - name: zmaier
+      groups:
+        - docker
+        - wheel
+        - sudo
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBANgYy5Nvx/QaPhrLwWXQA6uDZI2H3fX31xKDk9CSUwHUow7RF3l1w01II008H9m4yk2E8M02+7EHa8QEGwb+9W6hRwBc/F2Zk47ThSJQWtUHFLQgOfJBmu9PCdlTXI8xWQZ5LDMCdFfs3sFWs0ktxnMFL41KyOwZ+tALRVRj6NSJRfMWoGoVLAB4wGXTcapzuE+97fqiiKBDr9kW1qAd8wIRd7kz/VrijvPha3vlZLKs41pgg0q4Wsy42W82P+4X8e3ijfI7f1Q2aH6hUdl+AIXpA8d9zB2kMOOgQMLS6Uw08LxePJKRRtKqxN3vlxsOTXPd3s9RrpAFwpwPtwWuEdEJiJcfzCGJ9YvDlHzKaPRWidXoB4OAjwS1I3/pEcNUeDvfvhbgzC1UDfTnVzF3ZD0PAtI3ChavZ9EOZ64YuEN1OxbGuZcqAYFf8SbvDpWja3afj2lf8HhhfZhDVUmrPJvYHfIN3bAxDhtLMfjuYRXQqvzNL/f22f4znZj3a00=
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIFEbmZG6QyvxjdnbfTzOnUptLBpXp7DwTPcXtkkyVLnf54fK1ipILoyMqIf3h9njQDH80Pq199HO2YIKn/w14xwVSRfNfrMG5NGoYKf+lw9W6SDqO2Gdj7CsB7vglSHIW9tV4ELEI2zljjRgqaF2u206TcMFT9Tm5Cnk+0qBs2paKBB0py9HvIGS0vWOUGAhdT0xO4UCs1BkDFmfnxwvXgLEdp3CYBOdOYURvELpsXq96lNVB0B+76E0mqN6TBACxneV9IUfSP7U/dNEOInUIBsF5OsLs/8oUsGcpmZD/vl93+dmuJx/n6+4SJg74VUORVapu8639btYxQ8DdGjlM1tEhxce6Agor2vmDOO76j5emsNEvYCV0FjDzpF47+nU/FXd9LlrSH+UFM9EpsY43KzK1tBnc+/MYfCjaUH8nRS5wMLskoIX17H6dkUEUNJeX1heO7hZQq3mEqaH6wYE0EHBI2SHTATDktZSLKejjEhHF3JmdgWBJtvMl3UXJzXM=
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: myhostname
+    - path: /etc/zincati/config.d/55-updates-strategy.toml
+      contents:
+        inline: |
+          [updates]
+          strategy = "periodic"
+          [[updates.periodic.window]]
+          days = [ "Mon", "Tue" ]
+          start_time = "09:00"
+          length_minutes = 60
+storage:
+  disks:
+    - device: /dev/vda  # Primary drive for boot-related partitions
+      wipe_table: true
+      partitions:
+        - label: BIOS-BOOT
+          number: 1
+          size_mib: 1
+          type_guid: 21686148-6449-6E6F-744E-656564454649 # BIOS Boot partition
+        - label: EFI-SYSTEM
+          number: 2
+          size_mib: 512
+          type_guid: c12a7328-f81f-11d2-ba4b-00a0c93ec93b # EFI System Partition
+        - label: boot
+          number: 3
+          size_mib: 1024
+          type_guid: bc13c2ff-59e6-4262-a352-b275fd6f7172 # Boot partition
+          filesystem:
+            format: ext4
+            mount_options: ["defaults"]
+            label: boot
+            wipe_filesystem: true
+    - device: /dev/vdb  # Secondary drive for root filesystem
+      wipe_table: true
+      partitions:
+        - label: root
+          number: 1
+          size_mib: 100%  # Use entire disk
+          type_guid: 4f68bce3-e8cd-4db1-96e7-fbcaf984b709 # Root filesystem partition
+          filesystem:
+            format: ext4
+            mount_options: ["defaults"]
+            label: root
+            wipe_filesystem: true
+storage:
+  filesystems:
+    - path: /boot
+      device: /dev/disk/by-label/boot
+      format: ext4
+      wipe_filesystem: true
+      with_mount_unit: true
+    - path: /
+      device: /dev/disk/by-label/root
+      format: ext4
+      wipe_filesystem: true
+      with_mount_unit: true
+systemd:
+  units:
+    - name: rpm-ostree-countme.timer
+      enabled: false
+      mask: true

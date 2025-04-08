@@ -1,0 +1,24 @@
+namespaceOverride: "monitoring"
+grafana:
+  enabled: false
+prometheus:
+  prometheusSpec:
+    tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "gameserver"
+      effect: "NoSchedule"
+    persistentVolumeClaimRetentionPolicy: {
+      whenDeleted: "Retain",
+      whenScaled: "Retain"
+    }
+    retention: 180d
+  ingress:
+    enabled: true
+    annotations: {
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    }
+    ingressClassName: "nginx"
+    hosts: ["prometheus.teal.chillpickles.digital"]
+    paths: ["/"]
+    pathType: "Prefix"

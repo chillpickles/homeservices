@@ -1,0 +1,12 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: games
+  namespace: metallb-system
+spec:
+  addresses:
+  - 10.79.11.0-10.79.11.254
+  autoAssign: false
+  serviceAllocation:
+    namespaces:
+      - games
